@@ -57,25 +57,90 @@ void main() {
       expect(snake.belongs(x: 5, y: 5), false);
     });
 
-    test('can turn left', () {
-      final snake = Snake(x: 5, y: 5, speedX: 0, speedY: -1);
-      snake.grow(x: 5, y: 4);
-      snake.turnLeft();
-      snake.move();
-      expect(snake.belongs(x: 4, y: 4), true);
-      expect(snake.belongs(x: 5, y: 4), true);
-      expect(snake.belongs(x: 5, y: 5), false);
+    group('goLeft', () {
+      test('from looking up', () {
+        final snake = Snake(x: 5, y: 5);
+        snake.grow(x: 5, y: 4);
+        snake.goLeft();
+        snake.move();
+        expect(snake.belongs(x: 4, y: 4), true);
+        expect(snake.belongs(x: 5, y: 4), true);
+        expect(snake.belongs(x: 5, y: 5), false);
+        expect(snake.isAlive, true);
+      });
+
+      test('from looking down', () {
+        final snake = Snake(x: 5, y: 5);
+        snake.grow(x: 5, y: 6);
+        snake.goLeft();
+        snake.move();
+        expect(snake.belongs(x: 4, y: 6), true);
+        expect(snake.belongs(x: 5, y: 6), true);
+        expect(snake.belongs(x: 5, y: 5), false);
+        expect(snake.isAlive, true);
+      });
+
+      test('from looking left', () {
+        final snake = Snake(x: 5, y: 5);
+        snake.grow(x: 4, y: 5);
+        snake.goLeft();
+        snake.move();
+        expect(snake.belongs(x: 3, y: 5), true);
+        expect(snake.belongs(x: 4, y: 5), true);
+        expect(snake.belongs(x: 5, y: 5), false);
+        expect(snake.isAlive, true);
+      });
+
+      test('from looking right', () {
+        final snake = Snake(x: 5, y: 5);
+        snake.grow(x: 6, y: 5);
+        snake.goLeft();
+        snake.move();
+        expect(snake.isAlive, false);
+      });
     });
 
-    test('can turn right', () {
-      final snake = Snake(x: 5, y: 5, speedX: 0, speedY: -1);
-      snake.grow(x: 5, y: 4);
-      snake.turnRight();
-      snake.move();
-      expect(snake.belongs(x: 6, y: 4), true);
-      expect(snake.belongs(x: 5, y: 4), true);
-      expect(snake.belongs(x: 5, y: 5), false);
-    });
+    group('goRight', () {
+      test('from looking up', () {
+        final snake = Snake(x: 5, y: 5);
+        snake.grow(x: 5, y: 4);
+        snake.goRight();
+        snake.move();
+        expect(snake.belongs(x: 6, y: 4), true);
+        expect(snake.belongs(x: 6, y: 4), true);
+        expect(snake.belongs(x: 5, y: 5), false);
+        expect(snake.isAlive, true);
+      });
 
+      test('from looking down', () {
+        final snake = Snake(x: 5, y: 5);
+        snake.grow(x: 5, y: 6);
+        snake.goRight();
+        snake.move();
+        expect(snake.belongs(x: 6, y: 6), true);
+        expect(snake.belongs(x: 5, y: 6), true);
+        expect(snake.belongs(x: 5, y: 5), false);
+        expect(snake.isAlive, true);
+      });
+
+      test('from looking left', () {
+        final snake = Snake(x: 5, y: 5);
+        snake.grow(x: 4, y: 5);
+        snake.goRight();
+        snake.move();
+        expect(snake.isAlive, false);
+      });
+
+      test('from looking right', () {
+        final snake = Snake(x: 5, y: 5);
+        snake.grow(x: 6, y: 5);
+        snake.goRight();
+        snake.move();
+        expect(snake.belongs(x: 7, y: 5), true);
+        expect(snake.belongs(x: 6, y: 5), true);
+        expect(snake.belongs(x: 5, y: 5), false);
+        expect(snake.isAlive, true);
+      });
+    });
   });
 }

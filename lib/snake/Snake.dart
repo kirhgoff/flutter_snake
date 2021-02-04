@@ -3,9 +3,12 @@ import 'dart:math';
 class Snake {
   int _speedX = 0;
   int _speedY = 0;
+  bool _isAlive = true;
+
   List<Point<int>> _body;
 
   int get length => _body.length;
+  bool get isAlive => _isAlive;
 
   // Snake by default moves up
   Snake({int x, int y, int speedX = 0, int speedY = -1}) {
@@ -33,6 +36,11 @@ class Snake {
 
   void move() {
     final newHead = Point(_body.first.x + _speedX, _body.first.y + _speedY);
+    if (_body.contains(newHead)) {
+      _isAlive = false;
+      return;
+    }
+
     _body.insert(0, newHead);
     _body.removeLast();
   }
@@ -42,28 +50,23 @@ class Snake {
     return 'Snake: speed=($_speedX, $_speedY), body: $_body';
   }
 
-  // 0, -1  => -1, 0
-  // 0, 1   => 1, 0
-  // 1, 0   => 0, -1
-  // -1, 0  => 0, 1
-  void turnLeft() {
-    if (_speedX == 0) {
-      this._speedX = _speedY;
-      this._speedY = 0;
-    } else {
-      this._speedY = - _speedX;
-      this._speedX = 0;
-    }
+  void goLeft() {
+    _speedX = -1;
+    _speedY = 0;
   }
 
-  void turnRight() {
-    if (_speedX == 0) {
-      this._speedX = - _speedY;
-      this._speedY = 0;
-    } else {
-      this._speedY = _speedX;
-      this._speedX = 0;
-    }
+  void goRight() {
+    _speedX = 1;
+    _speedY = 0;
   }
 
+  void goUp() {
+    _speedX = 0;
+    _speedY = -1;
+  }
+
+  void goDown() {
+    _speedX = 0;
+    _speedY = 1;
+  }
 }
