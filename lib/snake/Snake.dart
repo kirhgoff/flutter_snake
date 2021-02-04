@@ -21,7 +21,8 @@ class Snake {
     _body = [Point(x, y)];
   }
 
-  Point head() => _body.first;
+  Point<int> head() => _body.first;
+  Point<int> nextHead() => Point(_body.first.x + _speedX, _body.first.y + _speedY);
 
   void grow({int x, int y}) {
     final head = this.head();
@@ -35,7 +36,7 @@ class Snake {
   bool belongs({int x, int y}) => _body.contains(Point(x, y));
 
   void move() {
-    final newHead = Point(_body.first.x + _speedX, _body.first.y + _speedY);
+    final newHead = nextHead();
     if (_body.contains(newHead)) {
       _isAlive = false;
       return;
@@ -68,5 +69,9 @@ class Snake {
   void goDown() {
     _speedX = 0;
     _speedY = 1;
+  }
+
+  void die() {
+    _isAlive = false;
   }
 }

@@ -21,5 +21,13 @@ void main() {
       board.generateFood(count: 1);
       expect(board.isFoodHere(x: 0, y: 0), true);
     });
+
+    test('can eat food', () {
+      final board = Board(width: 1, height: 1);
+      board.generateFood(count: 1);
+      expect(board.isFoodHere(x: 0, y: 0), true);
+      board.eatFood(Point(0, 0));
+      expect(board.isFoodHere(x: 0, y: 0), false);
+    });
   });
 }

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_snake/snake/Board.dart';
 import 'package:flutter_snake/snake/Snake.dart';
 
 void main() {
@@ -29,15 +32,44 @@ class GameScreenWidget extends StatefulWidget {
 }
 
 class _GameScreenWidgetState extends State<GameScreenWidget> {
-  int width = 10;
-  int height = 10;
+  Board _board = Board(width: 10, height: 10);
   Snake _snake = Snake(x: 5, y: 5);
+  Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _board.generateFood(count: 10);
+  }
 
   void _leftPressed() => setState(() { _snake.goLeft(); });
   void _rightPressed() => setState(() { _snake.goRight(); });
   void _upPressed() => setState(() { _snake.goUp(); });
   void _downPressed() => setState(() { _snake.goDown(); });
-  void _spacePressed() => setState(() { _snake.move(); });
+  //void _spacePressed() => setState(() { tick(); });
+
+  void tick(Timer timer) {
+    final head = _snake.nextHead();
+    if (_board.isOut(head)) {
+      _snake.die();
+    }
+
+    if (!_snake.isAlive) {
+      print("Snake is dead!");
+      timer.cancel();
+      return;
+    }
+
+    print("Tick... $head");
+
+    if (_board.isFoodHere(x: head.x, y: head.y)) {
+      _snake.grow(x: head.x, y: head.y);
+      _board.eatFood(head);
+    } else {
+       _snake.move();
+    }
+  }
 
   Widget _gridView(BuildContext context) {
     return Container(
@@ -63,13 +95,20 @@ class _GameScreenWidgetState extends State<GameScreenWidget> {
   }
 
   Widget _makeCell(int index, BuildContext context) {
-    final x = index % width;
-    final y = index ~/ width;
+    final x = index % _board.width;
+    final y = index ~/ _board.width;
 
-    final snakeBody = _snake.belongs(x: x, y: y);
-    final color = snakeBody ? (_snake.isAlive ? Colors.purple : Colors.black) : Colors.amber;
+    return Container(color: this._getColor(x, y));
+  }
 
-    return Container(color: color);
+  Color _getColor(int x, int y) {
+    if (_snake.belongs(x: x, y: y)) {
+      if (!_snake.isAlive) return Colors.black;
+      else return Colors.purple;
+    }
+    if (_board.isFoodHere(x: x, y: y)) return Colors.red;
+
+    return Colors.amber;
   }
 
   Widget _controlView(BuildContext context) {
@@ -84,7 +123,7 @@ class _GameScreenWidgetState extends State<GameScreenWidget> {
             ]
           ),
           _makeButton(Icons.keyboard_arrow_right, _rightPressed),
-          _makeButton(Icons.space_bar, _spacePressed),
+          _makeButton(Icons.space_bar, null),
         ],
       ),
     );
@@ -111,6 +150,12 @@ class _GameScreenWidgetState extends State<GameScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
+    timer = Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {
+        tick(timer);
+      });
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
