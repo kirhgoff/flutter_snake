@@ -53,4 +53,18 @@ class Board {
     final y = point.y;
     return x < 0 || x >= width || y < 0 || y >= height;
   }
+
+  Point<int> teleport(Point<int> point) {
+    final x = point.x;
+    final y = point.y;
+
+    var newX = x;
+    var newY = y;
+    if (x < 0) newX = width - 1;
+    if (x >= width) newX = 0;
+    if (y < 0) newY = height -1;
+    if (y >= height) newY = 0;
+    return Point(newX, newY);
+  }
+
 }

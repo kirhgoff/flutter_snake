@@ -25,10 +25,10 @@ class Snake {
   Point<int> nextHead() => Point(_body.first.x + _speedX, _body.first.y + _speedY);
 
   void grow({int x, int y}) {
-    final head = this.head();
-    if ((head.x - x).abs() + (head.y - y).abs() > 1) {
-      throw Exception('Inappropriate growth cell ($x, $y) to grow from $head');
-    }
+    //final head = this.head();
+    // if ((head.x - x).abs() + (head.y - y).abs() > 1) {
+    //   throw Exception('Inappropriate growth cell ($x, $y) to grow from $head');
+    // }
 
     this._body.insert(0, Point(x, y));
   }
@@ -42,6 +42,10 @@ class Snake {
       return;
     }
 
+    moveTo(newHead);
+  }
+
+  void moveTo(Point<int> newHead) {
     _body.insert(0, newHead);
     _body.removeLast();
   }

@@ -41,6 +41,11 @@ class _GameScreenWidgetState extends State<GameScreenWidget> {
     super.initState();
 
     _board.generateFood(count: 10);
+    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        tick(timer);
+      });
+    });
   }
 
   void _leftPressed() => setState(() { _snake.goLeft(); });
@@ -50,9 +55,13 @@ class _GameScreenWidgetState extends State<GameScreenWidget> {
   //void _spacePressed() => setState(() { tick(); });
 
   void tick(Timer timer) {
-    final head = _snake.nextHead();
+    var head = _snake.nextHead();
+    print("Tick ${DateTime.now()}... $head");
+
     if (_board.isOut(head)) {
-      _snake.die();
+      print("isOut! $head");
+      head = _board.teleport(head);
+      _snake.moveTo(head);
     }
 
     if (!_snake.isAlive) {
@@ -60,8 +69,6 @@ class _GameScreenWidgetState extends State<GameScreenWidget> {
       timer.cancel();
       return;
     }
-
-    print("Tick... $head");
 
     if (_board.isFoodHere(x: head.x, y: head.y)) {
       _snake.grow(x: head.x, y: head.y);
@@ -150,12 +157,6 @@ class _GameScreenWidgetState extends State<GameScreenWidget> {
 
   @override
   Widget build(BuildContext context) {
-    timer = Timer.periodic(Duration(seconds: 2), (timer) {
-      setState(() {
-        tick(timer);
-      });
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
