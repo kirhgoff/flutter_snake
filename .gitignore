@@ -39,3 +39,8 @@ app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# Pigeon stuff
+lib/messages.dart
+ios/Runner/pigeon.*
+android/app/src/main/java/
