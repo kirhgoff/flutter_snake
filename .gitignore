@@ -44,3 +44,5 @@ app.*.map.json
 lib/messages.dart
 ios/Runner/pigeon.*
 android/app/src/main/java/
+.ios/
+.android/

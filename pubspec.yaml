@@ -33,7 +33,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   pigeon: ^0.1.19
-  
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -75,3 +75,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  module:
+    androidX: true
+    androidPackage: dev.flutter.example.flutter_module
+    iosBundleIdentifier: dev.flutter.example.flutterModule
